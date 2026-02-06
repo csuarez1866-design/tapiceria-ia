@@ -77,7 +77,7 @@ if not st.session_state.autenticado:
 # AQUÍ APARECE TU LEMA PERSONALIZADO
 st.markdown('<p class="lema-bonito">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
-st.write(f"💼 **Panel de Diseño:** {st.session_state.cliente}")
+st.write(f" **Panel de Diseño:** {st.session_state.cliente}")
 
 col_izq, col_der = st.columns([1, 1.2])
 
@@ -114,4 +114,5 @@ with col_der:
                 st.image(output, caption="Diseño Exclusivo", use_container_width=True)
             except Exception as e:
                 st.error("Verifique su crédito en Replicate.")
+
 
