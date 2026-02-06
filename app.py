@@ -2,58 +2,81 @@ import streamlit as st
 import replicate
 import os
 
-# 1. Configuración de seguridad (Secrets)
-# El token se lee automáticamente de la configuración que hiciste en el paso anterior
+# --- 1. CONFIGURACIÓN DE PÁGINA Y FONDO PROFESIONAL ---
+st.set_page_config(page_title="Protap IA - Elite Design", page_icon="✂️", layout="wide")
+
+# Estilo CSS para poner fondo de taller elegante y ocultar botones de código
+st.markdown("""
+    <style>
+    .stApp {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+        url("https://images.unsplash.com/photo-1517524206127-48bbd362f39e?q=80&w=2000");
+        background-size: cover;
+    }
+    /* OCULTAR MENÚ DE GITHUB Y CÓDIGO (Lo que pediste) */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .viewerBadge_container__1QS1n {display: none !important;}
+    </style>
+    """, unsafe_allow_status_code=True)
+
+# --- 2. VERIFICACIÓN DE TOKEN ---
 if "REPLICATE_API_TOKEN" in st.secrets:
     os.environ['REPLICATE_API_TOKEN'] = st.secrets["REPLICATE_API_TOKEN"]
 else:
-    st.error("Error de configuración: Falta el Token en Secrets.")
+    st.error("⚠️ Configuración incompleta.")
     st.stop()
 
-st.set_page_config(page_title="Protap - Sistema de Diseño", page_icon="✂️")
+# --- 3. GESTIÓN DE CLAVES DE VENTA (Aquí generas tus códigos) ---
+# Simplemente añade nuevas palabras a esta lista para crear "tokens" de venta
+codigos_activos = {
+    "TALLER-VIP-01": "Acceso Premium",
+    "LUJO-AUTO-77": "Acceso Empresa",
+    "DEMO-GRATIS": "Prueba 24h"
+}
 
-# --- SISTEMA DE ACCESO PARA TALLERES ---
-with st.sidebar:
-    st.header("🔑 Acceso Clientes")
-    # Aquí es donde el taller pone la clave que TÚ le vendes
-    codigo_acceso = st.text_input("Código de Taller:", type="password")
+# --- 4. INTERFAZ DE LOGIN ---
+if "autenticado" not in st.session_state:
+    st.session_state.autenticado = False
 
-# Base de datos de clientes (Aquí añades los códigos que quieras vender)
-codigos_validos = ["TALLER01", "PRO-AUTO-2024", "PRUEBA-GRATIS"]
+if not st.session_state.autenticado:
+    st.title("🛡️ Protap IA: Sistema de Gestión Visual")
+    clave = st.text_input("Ingrese su Clave de Acceso Profesional:", type="password")
+    if st.button("Activar Licencia"):
+        if clave in codigos_activos:
+            st.session_state.autenticado = True
+            st.session_state.cliente = codigos_activos[clave]
+            st.rerun()
+        else:
+            st.error("Clave inválida o vencida. Contacte al desarrollador.")
+    st.stop()
 
-if codigo_acceso in codigos_validos:
-    st.sidebar.success("Acceso Concedido")
-    
-    st.title("✂️ Diseñador de Tapicería Profesional")
-    st.write("Herramienta exclusiva para talleres asociados.")
+# --- 5. APLICACIÓN DESBLOQUEADA ---
+st.title(f"✂️ Diseñador de Tapicería: {st.session_state.cliente}")
+st.sidebar.button("Cerrar Sesión", on_click=lambda: st.session_state.update({"autenticado": False}))
 
-    archivo = st.file_uploader("Subir foto del asiento", type=["jpg", "png", "jpeg"])
-    
-    estilo = st.selectbox("Seleccione el nuevo diseño:", [
-        "Cuero rojo con costura diamante",
-        "Cuero negro microperforado",
-        "Alcántara gris con bordes amarillos",
-        "Cuero café estilo vintage"
+col1, col2 = st.columns(2)
+
+with col1:
+    archivo = st.file_uploader("Subir foto del interior", type=["jpg", "png", "jpeg"])
+    estilo = st.selectbox("Estilo de Tapicería:", [
+        "Cuero Rojo Diamond Stitching",
+        "Cuero Negro Perforado Sport",
+        "Alcántara Gris Premium",
+        "Cuero Cognac Vintage"
     ])
 
-    prompts = {
-        "Cuero rojo con costura diamante": "Change the seat to red leather with luxury diamond stitching pattern",
-        "Cuero negro microperforado": "Change the seat to black perforated leather",
-        "Alcántara gris con bordes amarillos": "Change the seat to gray alcantara with yellow piping",
-        "Cuero café estilo vintage": "Change the seat to vintage brown leather"
-    }
-
-    if archivo and st.button("🚀 GENERAR DISEÑO"):
-        with st.spinner("Procesando imagen..."):
+with col2:
+    if archivo and st.button("✨ GENERAR PREVISUALIZACIÓN"):
+        with st.spinner("La IA está confeccionando el diseño..."):
             try:
+                # Aquí van tus prompts mejorados
+                p = f"Professional car upholstery, {estilo}, highly detailed, 4k"
                 output = replicate.run(
                     "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
-                    input={"image": archivo, "prompt": prompts[estilo]}
+                    input={"image": archivo, "prompt": p}
                 )
-                st.image(output, caption="Propuesta Visual", use_container_width=True)
+                st.image(output, caption="Resultado Final")
             except Exception as e:
-                st.error(f"Error: {e}")
-else:
-    st.title("🔓 Sistema Bloqueado")
-    st.info("Para activar esta herramienta en su taller, contacte al proveedor del servicio.")
-    st.warning("Ingrese un código de taller válido en el menú de la izquierda.")
+                st.error("Error en el servidor de diseño.")
