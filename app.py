@@ -3,7 +3,6 @@ import replicate
 import os
 
 # --- 1. CONFIGURACIÓN DE PÁGINA ---
-st.set_page_config(page_title=""Diseñemos juntos el asiento de sus sueños")
 
 st.set_page_config(page_title="Protap IA - Elite Design", page_icon="✂️", layout="wide")
 
@@ -122,4 +121,5 @@ with col_der:
                 st.error("El servidor de diseño no respondió. Verifique sus créditos.")
     elif not foto:
         st.info("Suba o tome una foto para comenzar el diseño.")
+
 
