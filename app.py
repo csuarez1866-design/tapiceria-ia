@@ -5,7 +5,7 @@ import os
 # --- 1. CONFIGURACIÓN DE PÁGINA Y FONDO PROFESIONAL ---
 st.set_page_config(page_title="Protap IA - Elite Design", page_icon="✂️", layout="wide")
 
-# Estilo CSS para poner fondo de taller elegante y ocultar botones de código
+# Estilo CSS corregido para fondo elegante y ocultar menús de edición
 st.markdown("""
     <style>
     .stApp {
@@ -13,27 +13,28 @@ st.markdown("""
         url("https://images.unsplash.com/photo-1517524206127-48bbd362f39e?q=80&w=2000");
         background-size: cover;
     }
-    /* OCULTAR MENÚ DE GITHUB Y CÓDIGO (Lo que pediste) */
+    /* ESTO BLOQUEA LA VISUALIZACIÓN DEL CÓDIGO Y MENÚS */
     #MainMenu {visibility: hidden;}
     footer {visibility: hidden;}
     header {visibility: hidden;}
     .viewerBadge_container__1QS1n {display: none !important;}
     </style>
-    """, unsafe_allow_status_code=True)
+    """, unsafe_allow_html=True) # <-- AQUÍ ESTABA EL ERROR, YA ESTÁ CORREGIDO
 
 # --- 2. VERIFICACIÓN DE TOKEN ---
 if "REPLICATE_API_TOKEN" in st.secrets:
     os.environ['REPLICATE_API_TOKEN'] = st.secrets["REPLICATE_API_TOKEN"]
 else:
-    st.error("⚠️ Configuración incompleta.")
+    st.error("⚠️ Configuración incompleta en Secrets.")
     st.stop()
 
-# --- 3. GESTIÓN DE CLAVES DE VENTA (Aquí generas tus códigos) ---
-# Simplemente añade nuevas palabras a esta lista para crear "tokens" de venta
+# --- 3. GENERADOR DE CLAVES (Aquí creas tus accesos para vender) ---
+# Para vender una clave nueva, solo añade una línea más aquí:
 codigos_activos = {
     "TALLER-VIP-01": "Acceso Premium",
     "LUJO-AUTO-77": "Acceso Empresa",
-    "DEMO-GRATIS": "Prueba 24h"
+    "DEMO-GRATIS": "Prueba 24h",
+    "NUEVA-LLAVE-2024": "Cliente Nuevo" # Ejemplo de cómo agregar más
 }
 
 # --- 4. INTERFAZ DE LOGIN ---
@@ -42,6 +43,8 @@ if "autenticado" not in st.session_state:
 
 if not st.session_state.autenticado:
     st.title("🛡️ Protap IA: Sistema de Gestión Visual")
+    st.subheader("Acceso exclusivo para talleres autorizados")
+    
     clave = st.text_input("Ingrese su Clave de Acceso Profesional:", type="password")
     if st.button("Activar Licencia"):
         if clave in codigos_activos:
@@ -71,7 +74,6 @@ with col2:
     if archivo and st.button("✨ GENERAR PREVISUALIZACIÓN"):
         with st.spinner("La IA está confeccionando el diseño..."):
             try:
-                # Aquí van tus prompts mejorados
                 p = f"Professional car upholstery, {estilo}, highly detailed, 4k"
                 output = replicate.run(
                     "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
@@ -79,5 +81,4 @@ with col2:
                 )
                 st.image(output, caption="Resultado Final")
             except Exception as e:
-                st.error("Error en el servidor de diseño.")
-
+                st.error("Error en el servidor de diseño. Verifique su crédito en Replicate.")
