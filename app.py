@@ -52,7 +52,7 @@ else:
 
 # --- 4. CLAVES DE VENTA ---
 codigos_activos = {
-    "ADMIN-MASTER": "Desarrollador",
+    "ADMIN": "Desarrollador",
     "TALLER-VIP-01": "Tapicería Central",
     "PRO-AUTO-2024": "Diseños Elite"
 }
@@ -114,3 +114,4 @@ with col_der:
                 st.image(output, caption="Diseño Exclusivo", use_container_width=True)
             except Exception as e:
                 st.error("Verifique su crédito en Replicate.")
+
