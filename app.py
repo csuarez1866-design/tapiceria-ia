@@ -80,3 +80,4 @@ with col2:
                 st.image(output, caption="Resultado Final")
             except Exception as e:
                 st.error("Error en el servidor de diseño.")
+
