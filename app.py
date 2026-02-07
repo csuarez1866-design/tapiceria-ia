@@ -27,7 +27,7 @@ st.markdown(f"""
     /* EL LOGO MÁS IMPONENTE: TAMAÑO MONUMENTAL */
     .protap-logo {{
         font-family: 'Great Vibes', cursive; 
-        font-size: clamp(200px, 40vw, 300px); /* TAMAÑO MÁXIMO AUMENTADO A 300PX */
+        font-size: clamp(200px, 40vw, 300px); /* TAMAÑO MÁXIMO AUMENTADO A 400PX */
         font-weight: 400;
         text-align: center;
         
@@ -157,6 +157,7 @@ with col_viz:
                     st.error("Error en la generación. Intente con otra foto.")
     else:
         st.info("Cargue una foto para activar la personalización.")
+
 
 
 
