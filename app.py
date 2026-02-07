@@ -3,7 +3,7 @@ import replicate
 import os
 
 # --- 1. CONFIGURACIÓN ---
-st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
+st.set_page_config(page_title="Protap IA - Elite", layout="wide")
 
 # --- 2. CONFIGURACIÓN DE IMÁGENES REFORZADAS ---
 # He actualizado estos links a servidores más estables (Unsplash y Wikimedia)
@@ -118,3 +118,4 @@ with col2:
                     st.image(out, caption="Diseño Propuesto", use_container_width=True)
                 except Exception as e:
                     st.error("Servidor ocupado. Por favor, intenta de nuevo en unos segundos.")
+
