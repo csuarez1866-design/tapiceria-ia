@@ -12,7 +12,6 @@ st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
     
-    /* Eliminar iconos de error */
     img {{ display: none !important; }}
     .stImage img {{ display: block !important; }}
 
@@ -36,7 +35,6 @@ st.markdown(f"""
         text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
     }}
 
-    /* Estilo para los contenedores de secciones */
     .stExpander {{
         background: rgba(255, 255, 255, 0.05) !important;
         border: 1px solid #bf953f !important;
@@ -72,52 +70,62 @@ if not st.session_state.autenticado:
     st.stop()
 
 # --- 5. PANEL DE DISEÑO ---
-st.markdown('<p class="lema-gigante">Personalizador de Tapicería Elite</p>', unsafe_allow_html=True)
+st.markdown('<p class="lema-gigante">Diseño de Tapicería Personalizada</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns([1, 1.3])
 
 with col1:
-    st.markdown("### 📸 Paso 1: Cargar Base")
-    foto = st.camera_input("Capturar Asiento")
-    if not foto: foto = st.file_uploader("O subir archivo", type=["jpg", "png", "jpeg"])
+    st.markdown("### 📸 Paso 1: Imagen Base")
+    foto = st.camera_input("Capturar")
+    if not foto: foto = st.file_uploader("Subir imagen", type=["jpg", "png", "jpeg"])
     
-    st.markdown("### 🛠️ Paso 2: Configurar Secciones")
+    st.markdown("### 🛠️ Paso 2: Configuración Detallada")
     
-    # SECCIÓN: CENTRO DEL ASIENTO
+    # SECCIÓN: CABEZAL (NUEVA)
+    with st.expander("👤 CABEZAL"):
+        m_cabezal = st.selectbox("Material del Cabezal", ["Igual al centro", "Igual a laterales", "Cuero Liso", "Alcántara"])
+        c_cabezal = st.color_picker("Color del Cabezal", "#111111")
+    
+    # SECCIÓN: CENTRO
     with st.expander("💎 SECCIÓN CENTRAL", expanded=True):
-        m_centro = st.selectbox("Tipo de Material (Centro)", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Diseño Diamante"])
+        m_centro = st.selectbox("Tipo de Material (Centro)", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Efecto Diamante", "Fibra de Carbono"])
         c_centro = st.color_picker("Color del Centro", "#333333")
     
     # SECCIÓN: LATERALES
     with st.expander("🏎️ SECCIÓN LATERAL"):
-        m_lat = st.selectbox("Tipo de Material (Laterales)", ["Cuero Premium", "Carbon Fiber Look", "Cuero Napa"])
+        m_lat = st.selectbox("Tipo de Material (Laterales)", ["Cuero Napa", "Cuero Premium", "Carbon Fiber Look"])
         c_lat = st.color_picker("Color de Laterales", "#111111")
     
-    # SECCIÓN: COSTURAS Y DETALLES
-    with st.expander("🧵 COSTURAS Y ESTILO"):
-        hilo = st.color_picker("Color de Hilo (Costuras)", "#E60000")
-        estilo_costura = st.selectbox("Estilo de Costura", ["Doble Costura", "Costura Simple", "Punto de Cruz", "Estilo Hexagonal"])
-        piping = st.checkbox("¿Añadir vivo (Piping) en los bordes?")
+    # SECCIÓN: COSTURAS Y BORDADO (ACTUALIZADA)
+    with st.expander("🧵 DETALLES Y LOGO"):
+        hilo = st.color_picker("Color de Costuras", "#E60000")
+        estilo_costura = st.selectbox("Estilo", ["Doble Costura", "Simple", "Punto Hexagonal"])
+        bordado_logo = st.checkbox("¿Añadir bordado de logo en el respaldo?")
+        if bordado_logo:
+            color_logo = st.color_picker("Color del Bordado", "#FFFFFF")
+            posicion_logo = st.radio("Posición del logo", ["Centro del respaldo", "Bajo el cabezal"])
 
 with col2:
-    st.markdown("### 🚀 Paso 3: Generar Resultado")
+    st.markdown("### 🚀 Paso 3: Previsualización")
     if foto:
-        if st.button("GENERAR DISEÑO DE LUJO"):
-            with st.spinner("La IA está trabajando en su diseño..."):
+        if st.button("GENERAR DISEÑO EXCLUSIVO"):
+            with st.spinner("Creando su diseño personalizado..."):
                 try:
-                    # Creamos un prompt detallado basado en las secciones
-                    p = (f"Upholstery car seat redesign. Center part: {m_centro} in color {c_centro}. "
-                         f"Side bolsters: {m_lat} in color {c_lat}. "
-                         f"Stitching style: {estilo_costura} using {hilo} thread. "
-                         f"{'Include contrast piping on edges' if piping else ''}. "
-                         "8k resolution, professional automotive interior photography, hyper-realistic.")
+                    # PROMPT REFORZADO CON LAS NUEVAS SECCIONES
+                    p = (f"Automotive upholstery masterwork. "
+                         f"Headrest: {m_cabezal} in {c_cabezal} color. "
+                         f"Seat center: {m_centro} texture, color {c_centro}. "
+                         f"Sides: {m_lat} in {c_lat}. "
+                         f"Stitching: {estilo_costura} with {hilo} thread. "
+                         f"{'Add an elegant embroidered logo in ' + color_logo + ' color on ' + posicion_logo if bordado_logo else ''}. "
+                         "8k resolution, luxury car interior, highly detailed, realistic materials.")
                     
                     out = replicate.run(
                         "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
                         input={"image": foto, "prompt": p, "image_guidance_scale": 1.5}
                     )
-                    st.image(out, caption="Propuesta de Tapicería Finalizada", use_container_width=True)
+                    st.image(out, caption="Resultado del diseño personalizado", use_container_width=True)
                 except:
-                    st.error("Error en la conexión. Intenta de nuevo.")
+                    st.error("Error al procesar. Intenta con una foto más clara.")
     else:
-        st.info("Esperando captura de imagen para comenzar el diseño.")
+        st.info("Sube una foto para aplicar la configuración de materiales.")
