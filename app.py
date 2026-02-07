@@ -6,7 +6,7 @@ import os
 st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
 
 # --- 2. FONDO Y ESTILO DE MARCA IMPONENTE ---
-url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000"
+url_fondo = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2000"
 
 st.markdown(f"""
     <style>
@@ -127,3 +127,4 @@ with col2:
                     st.image(out, use_container_width=True)
                 except:
                     st.error("Error de conexión. Reintenta.")
+
