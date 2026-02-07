@@ -5,19 +5,18 @@ import os
 # --- 1. CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="Protap IA - Elite Design", page_icon="✂️", layout="wide")
 
-# --- 2. ESTILO VISUAL, LEMA Y FONDO (CSS CORREGIDO) ---
+# --- 2. FONDO DE ASIENTO PREMIUM Y ESTILOS (CSS) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
     
-    /* ESTO FUERZA LA IMAGEN DE FONDO */
+    /* IMAGEN DE FONDO DE ASIENTO DE ALTA CALIDAD */
     .stApp {
-        background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
-        url("https://images.unsplash.com/photo-1617469767053-d8229a9a6110?q=80&w=2070&auto=format&fit=crop");
+        background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+        url("https://images.unsplash.com/photo-1631553127988-34757788437d?q=80&w=2000");
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
-        background-repeat: no-repeat !important;
     }
 
     .lema-bonito {
@@ -32,15 +31,16 @@ st.markdown("""
         text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* Ocultar elementos de Streamlit */
+    /* Ocultar botones técnicos */
     header, footer, #MainMenu {visibility: hidden !important;}
     .stAppDeployButton, .viewerBadge_container__1QS1n {display: none !important;}
     
-    /* Contenedores con transparencia para que se vea el fondo */
-    div[data-testid="stVerticalBlock"] > div {
-        background-color: rgba(0, 0, 0, 0.3);
-        padding: 15px;
-        border-radius: 12px;
+    /* Estilo para los bloques de selección */
+    [data-testid="stVerticalBlock"] > div {
+        background-color: rgba(0, 0, 0, 0.5);
+        padding: 20px;
+        border-radius: 15px;
+        border: 1px solid rgba(191, 149, 63, 0.2);
     }
     
     h1, h2, h3, p, label { color: white !important; }
@@ -70,7 +70,7 @@ if not st.session_state.autenticado:
 # --- 5. INTERFAZ TIPO CATÁLOGO ---
 st.markdown('<p class="lema-bonito">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
-col_izq, col_der = st.columns([1, 1.3])
+col_izq, col_der = st.columns([1, 1.2])
 
 with col_izq:
     st.subheader("📸 Captura de Base")
@@ -79,30 +79,31 @@ with col_izq:
 
     st.divider()
     
-    # SECCIONES DIVIDIDAS
-    st.markdown("### 🛠️ Configuración Premium")
+    # SECCIONES DE DISEÑO
+    st.markdown("### 🛠️ Configuración de Materiales")
     
-    st.markdown("**🛡️ PARTE CENTRAL**")
-    m_centro = st.selectbox("Material", ["Alcántara", "Microperforado", "Cuero Liso", "Fibra de Carbono"], key="mc")
-    col_c = st.color_picker("Color Central", "#222222", key="cc")
+    tab1, tab2 = st.tabs(["Centro y Laterales", "Costuras"])
+    
+    with tab1:
+        m_centro = st.selectbox("Material Centro", ["Alcántara", "Microperforado", "Cuero Liso", "Fibra de Carbono"], key="mc")
+        col_c = st.color_picker("Color Central", "#333333", key="cc")
+        m_lat = st.selectbox("Material Lateral", ["Cuero Liso", "Cuero Premium", "Carbon Fiber Look"], key="ml")
+        col_l = st.color_picker("Color Lateral", "#111111", key="cl")
 
-    st.markdown("**🏎️ LATERALES**")
-    m_lat = st.selectbox("Material Lateral", ["Cuero Liso", "Cuero Premium", "Carbon Fiber Look"], key="ml")
-    col_l = st.color_picker("Color Lateral", "#111111", key="cl")
-
-    st.markdown("**🧵 COSTURAS**")
-    estilo_c = st.selectbox("Estilo", ["Sencilla", "Doble Sport", "Diamante (Diamond)"], key="ec")
-    col_h = st.color_picker("Color Hilo", "#E60000", key="ch")
+    with tab2:
+        estilo_c = st.selectbox("Estilo", ["Sencilla", "Doble Sport", "Diamante (Diamond)"], key="ec")
+        col_h = st.color_picker("Color Hilo", "#FF0000", key="ch")
+        detalles = st.text_input("Extras (ej: Franja central, logo)")
 
 with col_der:
     st.subheader("🖼️ Propuesta IA")
     if foto and st.button("✨ GENERAR DISEÑO"):
-        with st.spinner("Creando diseño..."):
+        with st.spinner("Creando propuesta..."):
             try:
                 prompt_ia = (
                     f"Professional car seat upholstery. Center: {m_centro} in {col_c}. "
                     f"Sides: {m_lat} in {col_l}. Stitching: {estilo_c} in {col_h}. "
-                    f"Realistic textures, 4k, studio lighting."
+                    f"Realistic textures, luxury automotive photography style, 4k."
                 )
                 output = replicate.run(
                     "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
