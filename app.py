@@ -268,7 +268,7 @@ if not st.session_state.autenticado:
                 if st.button("ℹ️ INFO", use_container_width=True):
                     st.info("""
                     **Credenciales de prueba:**
-                    - ADMIN: admin_protap
+                    - ADMIN: admin
                     - TALLER01: taller_protap_2024
                     - CLIENTE: cliente_premium
                     """)
@@ -507,3 +507,4 @@ st.markdown("""
         </p>
     </div>
 """, unsafe_allow_html=True)
+
