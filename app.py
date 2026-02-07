@@ -44,7 +44,7 @@ else:
     st.stop()
 
 # --- 4. ACCESO ---
-codigos_activos = {"ADMIN-MASTER": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
+codigos_activos = {"ADMIN": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
 
 if "autenticado" not in st.session_state: st.session_state.autenticado = False
 
@@ -106,3 +106,4 @@ with col_der:
                 st.image(output, caption="Propuesta Personalizada")
             except Exception as e:
                 st.error("Error en servidor. Verifique créditos.")
+
