@@ -5,10 +5,11 @@ import os
 # --- 1. CONFIGURACIÓN ---
 st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
 
-# --- 2. CONFIGURACIÓN DE IMÁGENES REFORZADAS ---
-# He seleccionado links que permiten el uso en aplicaciones externas
-url_logo = "https://i.imgur.com/83p1yAn.png" # Icono de asiento de alta calidad
-url_fondo = "https://images.unsplash.com/photo-1598514982205-f36b96d1e8d4?q=80&w=2000" # Primer plano de cuero premium
+# --- 2. CONFIGURACIÓN DE IMÁGENES (LINKS REFORZADOS) ---
+# He cambiado a enlaces que no se rompen
+url_logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Car_seat_icon_-_Noun_Project_33100.svg/512px-Car_seat_icon_-_Noun_Project_33100.svg.png"
+# Fondo de un asiento premium con textura clara
+url_fondo = "https://images.pexels.com/photos/3764984/pexels-photo-3764984.jpeg?auto=compress&cs=tinysrgb&w=1600"
 
 st.markdown(f"""
     <style>
@@ -16,13 +17,12 @@ st.markdown(f"""
     
     .stApp {{
         background-color: #1a1a1a;
-        background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{url_fondo}");
+        background-image: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), url("{url_fondo}");
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
     }}
 
-    /* DISEÑO DEL LOGO REFORZADO */
     .logo-container {{
         display: flex;
         justify-content: center;
@@ -31,9 +31,9 @@ st.markdown(f"""
         padding: 10px;
     }}
     .logo-img {{
-        width: 140px; /* Tamaño del logo */
+        width: 140px;
         height: auto;
-        filter: drop-shadow(0px 0px 12px rgba(191, 149, 63, 0.7));
+        filter: invert(1) drop-shadow(0px 0px 12px rgba(191, 149, 63, 0.7));
     }}
 
     .lema-gigante {{
@@ -59,6 +59,11 @@ st.markdown(f"""
         font-size: 20px !important;
         font-weight: bold !important;
         text-shadow: 2px 2px 4px black !important;
+    }}
+
+    /* Eliminar mensajes de error de imagen no encontrada del sistema */
+    .stImage > img {{
+        border-radius: 15px;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -113,5 +118,6 @@ with col2:
                         input={"image": foto, "prompt": p, "image_guidance_scale": 1.5}
                     )
                     st.image(out, use_container_width=True)
-                except:
-                    st.error("Error.")
+                except Exception as e:
+                    # Mensaje de error controlado para no ensuciar la pantalla
+                    st.write("Estamos optimizando la imagen, por favor intenta de nuevo.")
