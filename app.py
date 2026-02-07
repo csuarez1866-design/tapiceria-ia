@@ -45,7 +45,7 @@ else:
     st.stop()
 
 # --- 4. ACCESO ---
-codigos_activos = {"ADMIN-MASTER": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
+codigos_activos = {"ADMIN": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
 
 if "autenticado" not in st.session_state: st.session_state.autenticado = False
 
@@ -121,3 +121,4 @@ with col_der:
                 st.error("Error en la generación. Intente nuevamente.")
     elif not foto:
         st.info("Suba o tome una foto para comenzar a diseñar por secciones.")
+
