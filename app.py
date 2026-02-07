@@ -72,7 +72,7 @@ with col_izq:
     st.divider()
     
     # --- SECCIÓN A: EL CENTRO ---
-    st.subheader("🛋️ Configuración del Centro")
+    st.subheader(" Configuración del Centro")
     c1, c2 = st.columns(2)
     with c1:
         mat_centro = st.selectbox("Material Centro:", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Fibra de Carbono"], key="m_c")
@@ -80,7 +80,7 @@ with col_izq:
         col_centro = st.color_picker("Color Centro:", "#333333", key="c_c")
     
     # --- SECCIÓN B: LOS LATERALES (OREJAS) ---
-    st.subheader("🏎️ Configuración de Laterales")
+    st.subheader(" Configuración de Laterales")
     c3, c4 = st.columns(2)
     with c3:
         mat_lat = st.selectbox("Material Lateral:", ["Cuero Liso", "Cuero Sintético", "Fibra de Carbono"], key="m_l")
@@ -121,4 +121,5 @@ with col_der:
                 st.error("Error en la generación. Intente nuevamente.")
     elif not foto:
         st.info("Suba o tome una foto para comenzar a diseñar por secciones.")
+
 
