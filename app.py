@@ -33,6 +33,7 @@ st.markdown("""
     }
     
     h1, h2, h3, p, label { color: white !important; }
+    .stSelectbox label, .stColorPicker label { font-weight: bold; font-size: 14px; }
     </style>
     """, unsafe_allow_html=True)
 
@@ -44,7 +45,7 @@ else:
     st.stop()
 
 # --- 4. ACCESO ---
-codigos_activos = {"ADMIN": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
+codigos_activos = {"ADMIN-MASTER": "Desarrollador", "TALLER-VIP-01": "Tapicería Central"}
 
 if "autenticado" not in st.session_state: st.session_state.autenticado = False
 
@@ -58,9 +59,8 @@ if not st.session_state.autenticado:
             st.rerun()
     st.stop()
 
-# --- 5. CONFIGURADOR POR ZONAS ---
+# --- 5. INTERFAZ PROFESIONAL ---
 st.markdown('<p class="lema-bonito">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
-st.write(f"💼 **Taller:** {st.session_state.cliente}")
 
 col_izq, col_der = st.columns([1, 1.2])
 
@@ -70,40 +70,54 @@ with col_izq:
     if not foto: foto = st.file_uploader("O subir archivo:", type=["jpg", "png", "jpeg"])
 
     st.divider()
-    st.subheader("2. Mapa de Materiales")
     
-    # NUEVA FUNCIÓN: SELECCIÓN DE ZONA
-    zona = st.radio("¿Qué parte desea modificar?", 
-                    ["Asiento Completo", "Solo el Centro", "Laterales (Orejas)", "Cabezal y Respaldos"])
-    
+    # --- SECCIÓN A: EL CENTRO ---
+    st.subheader("🛋️ Configuración del Centro")
     c1, c2 = st.columns(2)
     with c1:
-        material = st.selectbox("Material Principal:", ["Cuero Liso", "Fibra de Carbono", "Alcántara", "Microperforado"])
-        color_mat = st.color_picker("Color Base:", "#1E1E1E")
+        mat_centro = st.selectbox("Material Centro:", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Fibra de Carbono"], key="m_c")
     with c2:
-        costura = st.selectbox("Estilo Costura:", ["Sencilla", "Diamante", "Doble Sport"])
-        color_h = st.color_picker("Color Hilo:", "#FF0000")
+        col_centro = st.color_picker("Color Centro:", "#333333", key="c_c")
     
-    detalles = st.text_input("Personalización extra (ej: Franja central azul):")
+    # --- SECCIÓN B: LOS LATERALES (OREJAS) ---
+    st.subheader("🏎️ Configuración de Laterales")
+    c3, c4 = st.columns(2)
+    with c3:
+        mat_lat = st.selectbox("Material Lateral:", ["Cuero Liso", "Cuero Sintético", "Fibra de Carbono"], key="m_l")
+    with c4:
+        col_lat = st.color_picker("Color Lateral:", "#1E1E1E", key="c_l")
+
+    # --- SECCIÓN C: COSTURAS Y DETALLES ---
+    st.subheader("🧵 Costuras y Acabados")
+    c5, c6 = st.columns(2)
+    with c5:
+        estilo_hilo = st.selectbox("Estilo Costura:", ["Sencilla", "Doble Sport", "Diamante (Diamond)", "Hexagonal"], key="e_h")
+    with c6:
+        col_hilo = st.color_picker("Color de Hilo:", "#FF0000", key="c_h")
+    
+    detalles = st.text_input("Personalización adicional (ej: Bordado de marca, franjas):")
 
 with col_der:
-    st.subheader("3. Resultado")
-    if foto and st.button("🚀 GENERAR DISEÑO POR ZONAS"):
-        with st.spinner("Procesando materiales..."):
+    st.subheader("2. Resultado del Diseño")
+    if foto and st.button("🚀 GENERAR PROPUESTA POR SECCIONES"):
+        with st.spinner("La IA está combinando los materiales..."):
             try:
-                # Prompt inteligente que usa la 'zona' seleccionada
+                # Prompt avanzado que divide las instrucciones por zonas
                 prompt_ia = (
-                    f"In this car seat, modify ONLY the {zona}. "
-                    f"Apply {material} texture in color {color_mat}. "
-                    f"Add {costura} stitching with thread color {color_h}. "
-                    f"Maintain the rest of the seat original. High detail, 4k, {detalles}"
+                    f"Professional car seat design. "
+                    f"CENTRAL PART: {mat_centro} texture in color {col_centro}. "
+                    f"SIDE BOLSTERS AND EDGES: {mat_lat} texture in color {col_lat}. "
+                    f"STITCHING: {estilo_hilo} pattern throughout the seat in color {col_hilo}. "
+                    f"High quality upholstery, realistic leather and fabric textures, 4k, {detalles}"
                 )
                 
                 output = replicate.run(
                     "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
                     input={"image": foto, "prompt": prompt_ia, "image_guidance_scale": 1.5}
                 )
-                st.image(output, caption="Propuesta Personalizada")
+                st.image(output, caption="Propuesta de Diseño Personalizada", use_container_width=True)
+                st.success("¡Diseño generado con éxito!")
             except Exception as e:
-                st.error("Error en servidor. Verifique créditos.")
-
+                st.error("Error en la generación. Intente nuevamente.")
+    elif not foto:
+        st.info("Suba o tome una foto para comenzar a diseñar por secciones.")
