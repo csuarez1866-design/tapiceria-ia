@@ -10,15 +10,11 @@ url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w
 
 st.markdown(f"""
     <style>
-    /* Importamos fuentes tipo Script/Manuscritas elegantes (estilo Black Holist) */
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playball&display=swap');
     
-    img {{
-        display: none !important;
-    }}
-    .stImage img {{
-        display: block !important;
-    }}
+    /* Ocultar errores de imagen */
+    img {{ display: none !important; }}
+    .stImage img {{ display: block !important; }}
 
     .stApp {{
         background-color: #1a1a1a;
@@ -28,30 +24,30 @@ st.markdown(f"""
         background-attachment: fixed !important;
     }}
 
-    /* ESTILO MANUSCRITO ELEGANTE (TIPO BLACK HOLIST) */
+    /* TAMAÑO MÁXIMO PARA PROTAP IA */
     .protap-logo {{
         font-family: 'Great Vibes', cursive; 
-        font-size: clamp(80px, 18vw, 150px); /* Tamaño súper masivo */
+        font-size: clamp(100px, 25vw, 180px); /* Tamaño aumentado significativamente */
         font-weight: 400;
         text-align: center;
-        background: linear-gradient(to bottom, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
+        background: linear-gradient(to bottom, #bf953f 0%, #fcf6ba 45%, #b38728 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 10px;
-        margin-bottom: -20px;
-        text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
-        filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.8));
+        margin-top: -20px; /* Sube un poco para aprovechar el espacio */
+        margin-bottom: -30px;
+        filter: drop-shadow(0px 10px 15px rgba(0,0,0,0.9)); /* Sombra más fuerte para tamaño grande */
+        line-height: 1;
     }}
 
     .subtitulo-vintage {{
         color: #fcf6ba;
         text-align: center;
         font-family: 'Playball', cursive;
-        font-size: 28px !important;
+        font-size: clamp(20px, 4vw, 32px) !important;
         margin-top: 0px;
-        margin-bottom: 40px;
-        text-shadow: 2px 2px 4px black;
-        opacity: 0.9;
+        margin-bottom: 50px;
+        text-shadow: 2px 2px 8px black;
+        opacity: 0.95;
     }}
 
     header, footer, #MainMenu {{ visibility: hidden !important; }}
@@ -64,7 +60,7 @@ st.markdown(f"""
     </style>
     """, unsafe_allow_html=True)
 
-# --- 3. SEGURIDAD (TOKEN) ---
+# --- 3. SEGURIDAD ---
 if "REPLICATE_API_TOKEN" in st.secrets:
     os.environ['REPLICATE_API_TOKEN'] = st.secrets["REPLICATE_API_TOKEN"]
 else:
