@@ -6,14 +6,13 @@ import os
 st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
 
 # --- 2. CONFIGURACIÓN DE FONDO ---
-# Usamos un enlace de alta calidad de un auto de lujo
 url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000"
 
 st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
+    /* Importamos una fuente Vintage/Clásica (Libre Baskerville) */
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,700;1,700&display=swap');
     
-    /* BLOQUEO DE ERRORES DE IMAGEN: Esto elimina el icono de imagen rota */
     img {{
         display: none !important;
     }}
@@ -29,18 +28,19 @@ st.markdown(f"""
         background-attachment: fixed !important;
     }}
 
+    /* ESTILO VINTAGE Y MÁS GRANDE PARA PROTAP IA */
     .lema-gigante {{
-        font-family: 'Playfair Display', serif;
-        font-size: clamp(30px, 7vw, 60px); 
-        font-weight: 900;
+        font-family: 'Libre Baskerville', serif;
+        font-size: clamp(45px, 10vw, 85px); /* Tamaño aumentado */
+        font-weight: 700;
         text-align: center;
         background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 50px;
-        margin-bottom: 30px;
-        font-style: italic;
-        text-shadow: 2px 2px 6px rgba(0,0,0,0.8);
+        margin-top: 40px;
+        margin-bottom: 20px;
+        text-shadow: 3px 3px 10px rgba(0,0,0,0.7);
+        letter-spacing: -1px;
     }}
 
     header, footer, #MainMenu {{ visibility: hidden !important; }}
@@ -73,8 +73,9 @@ if not st.session_state.autenticado:
                 st.rerun()
     st.stop()
 
-# --- 5. PANEL DE DISEÑO SIMPLIFICADO (INICIAL) ---
-st.markdown('<p class="lema-gigante">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
+# --- 5. PANEL DE DISEÑO ---
+st.markdown('<p class="lema-gigante">PROTAP IA</p>', unsafe_allow_html=True)
+st.markdown('<p style="text-align: center; font-style: italic; font-size: 24px !important;">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns([1, 1.2])
 
