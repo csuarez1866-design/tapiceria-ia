@@ -3,10 +3,10 @@ import replicate
 import os
 
 # --- 1. CONFIGURACIÓN DE PÁGINA ---
-st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
+st.set_page_config(page_title="Protap IA - Elite", layout="wide")
 
 # --- 2. FONDO Y ESTILO DE MARCA ---
-url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000"
+url_fondo = "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=2000"
 
 st.markdown(f"""
     <style>
@@ -101,24 +101,24 @@ st.markdown('<p class="protap-logo">Protap IA</p>', unsafe_allow_html=True)
 col_config, col_viz = st.columns([1, 1.2])
 
 with col_config:
-    st.markdown("### 📸 1. Captura de Base")
+    st.markdown("### 1. Captura de Base")
     foto = st.camera_input("Asiento actual")
     if not foto: foto = st.file_uploader("O sube una imagen", type=["jpg", "png", "jpeg"])
 
-    st.markdown("### 🎨 2. Personalización por Zonas")
+    st.markdown("###  2. Personalización por Zonas")
 
     # SECCIÓN CENTRO
-    with st.expander("💎 ZONA CENTRAL (Respaldo y Base)"):
+    with st.expander(" ZONA CENTRAL (Respaldo y Base)"):
         mat_centro = st.selectbox("Material", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Diseño Diamante", "Tela Premium"])
         col_centro = st.color_picker("Color Principal", "#333333", key="c1")
 
     # SECCIÓN LATERALES
-    with st.expander("🏎️ ZONA LATERAL (Soportes)"):
+    with st.expander(" ZONA LATERAL (Soportes)"):
         mat_lat = st.selectbox("Material Lateral", ["Cuero Napa", "Fibra de Carbono", "Cuero Premium"])
         col_lat = st.color_picker("Color Lateral", "#111111", key="c2")
 
     # SECCIÓN CABEZAL Y LOGO
-    with st.expander("👤 CABEZAL Y BORDADO"):
+    with st.expander(" CABEZAL Y BORDADO"):
         mat_head = st.selectbox("Estilo Cabezal", ["A juego con centro", "A juego con laterales", "Contraste liso"])
         bordado = st.checkbox("¿Incluir bordado Protap?")
         if bordado:
@@ -131,7 +131,7 @@ with col_config:
         piping = st.checkbox("¿Añadir vivo (Piping) en bordes?")
 
 with col_viz:
-    st.markdown("### 🚀 3. Resultado Final")
+    st.markdown("###  3. Resultado Final")
     if foto:
         if st.button("GENERAR DISEÑO COMPLETO"):
             with st.spinner("La IA está cosiendo su diseño..."):
@@ -157,4 +157,5 @@ with col_viz:
                     st.error("Error en la generación. Intente con otra foto.")
     else:
         st.info("Cargue una foto para activar la personalización.")
+
 
