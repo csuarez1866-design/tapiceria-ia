@@ -7,7 +7,7 @@ st.set_page_config(page_title="Protap IA - Elite", layout="wide")
 
 # --- 2. CONFIGURACIÓN DE IMÁGENES REFORZADAS ---
 # He actualizado estos links a servidores más estables (Unsplash y Wikimedia)
-url_logo = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Car_seat_icon_-_Noun_Project_33100.svg/512px-Car_seat_icon_-_Noun_Project_33100.svg.png"
+url_logo = 
 url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2000"
 
 st.markdown(f"""
@@ -118,4 +118,5 @@ with col2:
                     st.image(out, caption="Diseño Propuesto", use_container_width=True)
                 except Exception as e:
                     st.error("Servidor ocupado. Por favor, intenta de nuevo en unos segundos.")
+
 
