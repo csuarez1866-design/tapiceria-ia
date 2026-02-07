@@ -12,40 +12,68 @@ st.markdown(f"""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
     
+    /* Ocultar cualquier error residual de imagen */
     img {{ display: none !important; }}
     .stImage img {{ display: block !important; }}
 
     .stApp {{
+        background-color: #1a1a1a;
         background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("{url_fondo}");
         background-size: cover !important;
+        background-position: center !important;
+        background-attachment: fixed !important;
     }}
 
+    /* EL LOGO MÁS IMPONENTE: TAMAÑO MONUMENTAL */
     .protap-logo {{
         font-family: 'Great Vibes', cursive; 
-        font-size: clamp(100px, 30vw, 220px); 
+        font-size: clamp(120px, 40vw, 300px); /* TAMAÑO MÁXIMO AUMENTADO A 300PX */
+        font-weight: 400;
         text-align: center;
+        
+        /* Efecto de Oro Líquido */
         background: linear-gradient(to right, #bf953f 20%, #fcf6ba 40%, #fcf6ba 60%, #bf953f 80%);
         background-size: 200% auto;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         animation: shine 4s linear infinite;
-        margin-top: -50px;
-        margin-bottom: -50px;
-        filter: drop-shadow(0px 10px 20px rgba(0,0,0,0.8));
+        
+        margin-top: -80px; 
+        margin-bottom: -80px;
+        filter: drop-shadow(0px 15px 30px rgba(0,0,0,0.9));
+        line-height: 1.1;
+        white-space: nowrap;
     }}
 
-    @keyframes shine {{ to {{ background-position: 200% center; }} }}
-
-    /* Estilo para las secciones (Expanders) */
-    .stExpander {{
-        background: rgba(255, 255, 255, 0.05) !important;
-        border: 1px solid #bf953f !important;
-        border-radius: 8px !important;
-        margin-bottom: 10px !important;
+    @keyframes shine {{
+        to {{ background-position: 200% center; }}
     }}
-    
-    label {{ color: #fcf6ba !important; font-weight: bold !important; }}
+
+    .subtitulo-vintage {{
+        color: #fcf6ba;
+        text-align: center;
+        font-family: 'serif';
+        font-style: italic;
+        font-size: clamp(24px, 6vw, 40px) !important;
+        margin-top: -30px;
+        margin-bottom: 50px;
+        text-shadow: 2px 2px 10px black;
+        letter-spacing: 2px;
+    }}
+
+    /* Estilo para el botón de ingreso */
+    .stButton>button {{
+        background: linear-gradient(45deg, #bf953f, #aa771c) !important;
+        color: black !important;
+        font-weight: bold !important;
+        border: none !important;
+        width: 100%;
+        height: 50px;
+        font-size: 20px !important;
+    }}
+
     header, footer, #MainMenu {{ visibility: hidden !important; }}
+    label {{ color: #fcf6ba !important; font-size: 20px !important; }}
     </style>
     """, unsafe_allow_html=True)
 
@@ -129,3 +157,4 @@ with col_viz:
                     st.error("Error en la generación. Intente con otra foto.")
     else:
         st.info("Cargue una foto para activar la personalización.")
+
