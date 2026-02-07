@@ -5,11 +5,20 @@ import os
 # --- 1. CONFIGURACIÓN DE PÁGINA ---
 st.set_page_config(page_title="Protap IA - Elite Design", page_icon="✂️", layout="wide")
 
-# --- 2. ESTILO VISUAL Y LEMA (CSS) ---
+# --- 2. ESTILO VISUAL, LEMA Y FONDO PREMIUM (CSS) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
     
+    /* FONDO CON IMAGEN DE ASIENTO PREMIUM */
+    .stApp {
+        background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+        url("https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=2070"); /* Imagen de interior de lujo */
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }
+
     .lema-bonito {
         font-family: 'Playfair Display', serif;
         font-size: 42px;
@@ -22,18 +31,18 @@ st.markdown("""
         font-style: italic;
     }
 
+    /* OCULTAR ELEMENTOS TÉCNICOS */
     header, footer, #MainMenu {visibility: hidden !important;}
     .stAppDeployButton, .viewerBadge_container__1QS1n {display: none !important;}
     
-    .stApp {
-        background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
-        url("https://images.unsplash.com/photo-1517524206127-48bbd362f39e?q=80&w=2000");
-        background-size: cover;
-        background-attachment: fixed;
-    }
+    h1, h2, h3, p, label, .stSelectbox label { color: white !important; text-shadow: 1px 1px 2px black; }
     
-    h1, h2, h3, p, label { color: white !important; }
-    .stSelectbox label, .stColorPicker label { font-weight: bold; font-size: 14px; }
+    /* Ajuste de contenedores para que no se vean totalmente negros */
+    [data-testid="stVerticalBlock"] {
+        background-color: rgba(0, 0, 0, 0.4);
+        padding: 20px;
+        border-radius: 15px;
+    }
     </style>
     """, unsafe_allow_html=True)
 
@@ -50,7 +59,7 @@ codigos_activos = {"ADMIN": "Desarrollador", "TALLER-VIP-01": "Tapicería Centra
 if "autenticado" not in st.session_state: st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
-    st.title("🛡️ Protap IA")
+    st.markdown('<p class="lema-bonito">Protap IA</p>', unsafe_allow_html=True)
     clave = st.text_input("Credencial de Acceso:", type="password")
     if st.button("Validar"):
         if clave in codigos_activos:
@@ -59,7 +68,7 @@ if not st.session_state.autenticado:
             st.rerun()
     st.stop()
 
-# --- 5. INTERFAZ PROFESIONAL ---
+# --- 5. INTERFAZ PROFESIONAL POR SECCIONES ---
 st.markdown('<p class="lema-bonito">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
 col_izq, col_der = st.columns([1, 1.2])
@@ -71,55 +80,40 @@ with col_izq:
 
     st.divider()
     
-    # --- SECCIÓN A: EL CENTRO ---
-    st.subheader(" Configuración del Centro")
-    c1, c2 = st.columns(2)
-    with c1:
-        mat_centro = st.selectbox("Material Centro:", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Fibra de Carbono"], key="m_c")
-    with c2:
-        col_centro = st.color_picker("Color Centro:", "#333333", key="c_c")
+    # CONFIGURACIÓN POR SECCIONES (Lo que pediste antes)
+    st.subheader("🛋️ Configuración por Partes")
     
-    # --- SECCIÓN B: LOS LATERALES (OREJAS) ---
-    st.subheader(" Configuración de Laterales")
-    c3, c4 = st.columns(2)
-    with c3:
-        mat_lat = st.selectbox("Material Lateral:", ["Cuero Liso", "Cuero Sintético", "Fibra de Carbono"], key="m_l")
-    with c4:
-        col_lat = st.color_picker("Color Lateral:", "#1E1E1E", key="c_l")
+    with st.expander("Detalles del Centro", expanded=True):
+        mat_centro = st.selectbox("Material Centro:", ["Alcántara", "Cuero Microperforado", "Cuero Liso", "Fibra de Carbono"])
+        col_centro = st.color_picker("Color Centro:", "#333333")
+    
+    with st.expander("Detalles de Laterales", expanded=True):
+        mat_lat = st.selectbox("Material Lateral:", ["Cuero Liso", "Cuero Sintético", "Fibra de Carbono"])
+        col_lat = st.color_picker("Color Lateral:", "#1E1E1E")
 
-    # --- SECCIÓN C: COSTURAS Y DETALLES ---
-    st.subheader("🧵 Costuras y Acabados")
-    c5, c6 = st.columns(2)
-    with c5:
-        estilo_hilo = st.selectbox("Estilo Costura:", ["Sencilla", "Doble Sport", "Diamante (Diamond)", "Hexagonal"], key="e_h")
-    with c6:
-        col_hilo = st.color_picker("Color de Hilo:", "#FF0000", key="c_h")
-    
-    detalles = st.text_input("Personalización adicional (ej: Bordado de marca, franjas):")
+    with st.expander("Costuras y Extras", expanded=True):
+        estilo_hilo = st.selectbox("Estilo Costura:", ["Sencilla", "Doble Sport", "Diamante (Diamond)", "Hexagonal"])
+        col_hilo = st.color_picker("Color de Hilo:", "#FF0000")
+        detalles = st.text_input("Notas adicionales:")
 
 with col_der:
     st.subheader("2. Resultado del Diseño")
-    if foto and st.button("🚀 GENERAR PROPUESTA POR SECCIONES"):
-        with st.spinner("La IA está combinando los materiales..."):
+    if foto and st.button("🚀 GENERAR PROPUESTA MAESTRA"):
+        with st.spinner("La IA está confeccionando su diseño premium..."):
             try:
-                # Prompt avanzado que divide las instrucciones por zonas
                 prompt_ia = (
-                    f"Professional car seat design. "
+                    f"Professional car seat luxury upholstery. "
                     f"CENTRAL PART: {mat_centro} texture in color {col_centro}. "
-                    f"SIDE BOLSTERS AND EDGES: {mat_lat} texture in color {col_lat}. "
-                    f"STITCHING: {estilo_hilo} pattern throughout the seat in color {col_hilo}. "
-                    f"High quality upholstery, realistic leather and fabric textures, 4k, {detalles}"
+                    f"SIDE BOLSTERS: {mat_lat} texture in color {col_lat}. "
+                    f"STITCHING: {estilo_hilo} in color {col_hilo}. "
+                    f"Realistic leather textures, studio lighting, 4k, {detalles}"
                 )
                 
                 output = replicate.run(
                     "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
                     input={"image": foto, "prompt": prompt_ia, "image_guidance_scale": 1.5}
                 )
-                st.image(output, caption="Propuesta de Diseño Personalizada", use_container_width=True)
-                st.success("¡Diseño generado con éxito!")
+                st.image(output, caption="Diseño de Alta Gama Generado", use_container_width=True)
+                st.success("¡Diseño finalizado!")
             except Exception as e:
-                st.error("Error en la generación. Intente nuevamente.")
-    elif not foto:
-        st.info("Suba o tome una foto para comenzar a diseñar por secciones.")
-
-
+                st.error("Error en la conexión. Intente de nuevo.")
