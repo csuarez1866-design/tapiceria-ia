@@ -3,49 +3,63 @@ import replicate
 import os
 
 # --- 1. CONFIGURACIÓN ---
-st.set_page_config(page_title="Protap IA", page_icon="✂️", layout="wide")
+st.set_page_config(page_title="Protap IA - Elite", page_icon="✂️", layout="wide")
 
-# --- 2. CSS PARA INTERFAZ LIMPIA Y FONDO DE ASIENTO ---
-# Imagen: Primer plano de costuras de asiento premium
-url_fondo = "https://cdn.pixabay.com/photo/2016/11/22/23/44/porsche-1851246_1280.jpg"
+# --- 2. CONFIGURACIÓN DE IMÁGENES (Cambia estos links si tienes unos propios) ---
+# He buscado links de servidores muy estables (Cloudinary y Unsplash)
+url_logo = "https://res.cloudinary.com/dze74ofjx/image/upload/v1625503521/car-seat-icon.png" # Logo estable
+url_fondo = "https://images.unsplash.com/photo-1583121274602-3e2820c69888?q=80&w=2000" # Asiento de cuero de alta gama
 
 st.markdown(f"""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,900;1,900&display=swap');
     
-    /* FONDO COMPLETO */
+    /* FONDO REFORZADO */
     .stApp {{
-        background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("{url_fondo}");
+        background-color: #1a1a1a; /* Color de respaldo si falla la imagen */
+        background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("{url_fondo}");
         background-size: cover !important;
         background-position: center !important;
         background-attachment: fixed !important;
     }}
 
-    /* LEMA ELEGANTE */
-    .lema-bonito {{
+    /* LOGO */
+    .logo-container {{
+        text-align: center;
+        margin-top: -30px;
+        padding-bottom: 10px;
+    }}
+    .logo-img {{
+        width: 150px;
+        filter: drop-shadow(0px 0px 15px rgba(191, 149, 63, 0.6));
+    }}
+
+    /* LETRAS GIGANTES */
+    .lema-gigante {{
         font-family: 'Playfair Display', serif;
-        font-size: 42px;
+        font-size: clamp(35px, 8vw, 65px); /* Se ajusta al tamaño de pantalla */
+        font-weight: 900;
         text-align: center;
         background: linear-gradient(to right, #bf953f, #fcf6ba, #b38728, #fbf5b7, #aa771c);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 20px;
+        margin-bottom: 40px;
         font-style: italic;
+        text-shadow: 3px 3px 8px rgba(0,0,0,0.6);
+        line-height: 1.1;
     }}
 
-    /* ELIMINAR CONTENEDORES Y BORDES */
-    [data-testid="stVerticalBlock"] {{ background: none !important; border: none !important; }}
-    div[data-testid="stExpander"] {{ background: none !important; border: none !important; }}
-    .stTabs {{ background: none !important; }}
-    
-    /* OCULTAR MENÚS TÉCNICOS */
+    /* LIMPIEZA TOTAL */
     header, footer, #MainMenu {{ visibility: hidden !important; }}
     .stAppDeployButton {{ display: none !important; }}
-
-    /* TEXTOS CLAROS */
-    h1, h2, h3, p, label, .stMarkdown {{ 
-        color: white !important; 
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important; 
+    [data-testid="stVerticalBlock"] {{ background: none !important; border: none !important; }}
+    
+    /* ESTILO DE TEXTOS DE CONTROL */
+    label, p, .stMarkdown {{ 
+        color: #fcf6ba !important; 
+        font-size: 20px !important;
+        font-weight: bold !important;
+        text-shadow: 2px 2px 4px black !important;
     }}
     </style>
     """, unsafe_allow_html=True)
@@ -54,57 +68,52 @@ st.markdown(f"""
 if "REPLICATE_API_TOKEN" in st.secrets:
     os.environ['REPLICATE_API_TOKEN'] = st.secrets["REPLICATE_API_TOKEN"]
 else:
-    st.error("Falta Token"); st.stop()
+    st.error("Token de Replicate no configurado en Secrets"); st.stop()
 
 # --- 4. LOGIN ---
 if "autenticado" not in st.session_state: st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
-    st.markdown('<p class="lema-bonito">Protap IA</p>', unsafe_allow_html=True)
-    with st.columns([1,2,1])[1]: # Centrar login
-        clave = st.text_input("Contraseña de Acceso:", type="password")
-        if st.button("Entrar"):
-            if clave in ["TALLER01", "ADMIN"]:
+    st.markdown(f'<div class="logo-container"><img src="{url_logo}" class="logo-img"></div>', unsafe_allow_html=True)
+    st.markdown('<p class="lema-gigante">PROTAP IA</p>', unsafe_allow_html=True)
+    with st.columns([1,1.5,1])[1]:
+        clave = st.text_input("Acceso Maestro:", type="password")
+        if st.button("INGRESAR AL TALLER"):
+            if clave in ["ADMIN", "TALLER01"]:
                 st.session_state.autenticado = True
                 st.rerun()
     st.stop()
 
-# --- 5. INTERFAZ LIMPIA ---
-st.markdown('<p class="lema-bonito">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
+# --- 5. PANEL DE DISEÑO ---
+st.markdown(f'<div class="logo-container"><img src="{url_logo}" class="logo-img"></div>', unsafe_allow_html=True)
+st.markdown('<p class="lema-gigante">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns([1, 1.2])
 
 with col1:
-    foto = st.camera_input("📸 Captura el asiento")
-    if not foto: foto = st.file_uploader("O selecciona un archivo", type=["jpg", "png", "jpeg"])
+    foto = st.camera_input("📷 CAPTURAR ASIENTO")
+    if not foto: foto = st.file_uploader("📂 SUBIR ARCHIVO", type=["jpg", "png", "jpeg"])
     
-    st.markdown("---")
+    st.markdown("<br>", unsafe_allow_html=True)
+    m_centro = st.selectbox("MATERIAL CENTRO", ["Alcántara", "Cuero Microperforado", "Fibra de Carbono", "Cuero Liso"])
+    c_centro = st.color_picker("COLOR CENTRO", "#333333")
     
-    # CONFIGURACIÓN SIN CUADROS, SOLO SELECTORES
-    st.markdown("### 🛠️ Configuración")
-    m_centro = st.selectbox("Centro:", ["Alcántara", "Microperforado", "Cuero Liso", "Fibra de Carbono"])
-    c_centro = st.color_picker("Color Centro:", "#333333")
+    m_lat = st.selectbox("MATERIAL LATERAL", ["Cuero Liso", "Cuero Premium", "Carbon Fiber Look"])
+    c_lat = st.color_picker("COLOR LATERAL", "#111111")
     
-    m_lat = st.selectbox("Laterales:", ["Cuero Liso", "Cuero Premium", "Carbon Fiber Look"])
-    c_lat = st.color_picker("Color Laterales:", "#111111")
-    
-    hilo = st.color_picker("Color de Hilo:", "#FF0000")
-    extras = st.text_input("Detalle adicional:")
+    hilo = st.color_picker("COLOR DE HILO", "#E60000")
 
 with col2:
     if foto:
-        st.markdown("### 🖼️ Propuesta")
-        if st.button("🚀 GENERAR NUEVO DISEÑO"):
-            with st.spinner("Confeccionando..."):
+        st.markdown("### 🖼️ RESULTADO DEL DISEÑO")
+        if st.button("🚀 GENERAR PROPUESTA ELITE"):
+            with st.spinner("CONFECCIONANDO SU DISEÑO..."):
                 try:
-                    p = f"Professional car seat upholstery. Center: {m_centro} in {c_centro}. Sides: {m_lat} in {c_lat}. Stitching color: {hilo}. 8k, realistic."
+                    p = f"Professional luxury car seat upholstery. Center: {m_centro} in {c_centro}. Sides: {m_lat} in {c_lat}. Stitching: {hilo}. 8k ultra realistic textures."
                     out = replicate.run(
                         "timbrooks/instruct-pix2pix:30c1d0b916a6f8efce20493f5d61ee27491ab2a60437c13c588468b9810ec23f",
                         input={"image": foto, "prompt": p, "image_guidance_scale": 1.5}
                     )
                     st.image(out, use_container_width=True)
-                except:
-                    st.error("Error de servidor.")
-    else:
-        st.info("Esperando captura de imagen...")
-        
+                except Exception as e:
+                    st.error(f"Error: {e}")
