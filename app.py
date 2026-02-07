@@ -10,8 +10,8 @@ url_fondo = "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w
 
 st.markdown(f"""
     <style>
-    /* Importamos una alternativa Serif Vintage potente de Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Unna:ital,wght@0,700;1,700&display=swap');
+    /* Importamos fuentes tipo Script/Manuscritas elegantes (estilo Black Holist) */
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playball&display=swap');
     
     img {{
         display: none !important;
@@ -28,31 +28,30 @@ st.markdown(f"""
         background-attachment: fixed !important;
     }}
 
-    /* ESTILO BLACK HOLIST VINTAGE - MÁS GRANDE */
+    /* ESTILO MANUSCRITO ELEGANTE (TIPO BLACK HOLIST) */
     .protap-logo {{
-        font-family: 'Black Holist', 'Unna', serif; /* Prioriza Black Holist si está instalada */
-        font-size: clamp(60px, 15vw, 110px); /* Tamaño masivo */
-        font-weight: 900;
+        font-family: 'Great Vibes', cursive; 
+        font-size: clamp(80px, 18vw, 150px); /* Tamaño súper masivo */
+        font-weight: 400;
         text-align: center;
         background: linear-gradient(to bottom, #bf953f 0%, #fcf6ba 50%, #b38728 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        margin-top: 20px;
-        margin-bottom: 0px;
-        text-shadow: 4px 4px 15px rgba(0,0,0,0.8);
-        letter-spacing: 2px;
-        text-transform: uppercase;
+        margin-top: 10px;
+        margin-bottom: -20px;
+        text-shadow: 3px 3px 8px rgba(0,0,0,0.5);
+        filter: drop-shadow(0px 4px 4px rgba(0,0,0,0.8));
     }}
 
     .subtitulo-vintage {{
         color: #fcf6ba;
         text-align: center;
-        font-family: 'Unna', serif;
-        font-style: italic;
-        font-size: 26px !important;
-        margin-top: -10px;
+        font-family: 'Playball', cursive;
+        font-size: 28px !important;
+        margin-top: 0px;
         margin-bottom: 40px;
         text-shadow: 2px 2px 4px black;
+        opacity: 0.9;
     }}
 
     header, footer, #MainMenu {{ visibility: hidden !important; }}
@@ -76,7 +75,7 @@ if "autenticado" not in st.session_state:
     st.session_state.autenticado = False
 
 if not st.session_state.autenticado:
-    st.markdown('<p class="protap-logo">PROTAP IA</p>', unsafe_allow_html=True)
+    st.markdown('<p class="protap-logo">Protap IA</p>', unsafe_allow_html=True)
     with st.columns([1,1.5,1])[1]:
         clave = st.text_input("Acceso Maestro:", type="password")
         if st.button("INGRESAR"):
@@ -86,7 +85,7 @@ if not st.session_state.autenticado:
     st.stop()
 
 # --- 5. PANEL DE DISEÑO ---
-st.markdown('<p class="protap-logo">PROTAP IA</p>', unsafe_allow_html=True)
+st.markdown('<p class="protap-logo">Protap IA</p>', unsafe_allow_html=True)
 st.markdown('<p class="subtitulo-vintage">"Diseñemos juntos el asiento de sus sueños"</p>', unsafe_allow_html=True)
 
 col1, col2 = st.columns([1, 1.2])
